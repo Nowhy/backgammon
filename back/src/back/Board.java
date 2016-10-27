@@ -110,30 +110,7 @@ public boolean canPut(Stone.Color color, int number){
 		return true;
 	}
 	
-/*	public boolean hasAllInBase(Stone.Color color, int except){
-		int f;
-		int t;
-		switch(color){
-		case WHITE:
-			if(barWhite > 0) return false;
-			f=0; t=18;
-			break;
-		case BLACK:
-			if(barBlack > 0) return false;
-			f=6; t=24;
-			break;
-		default: return false;
-		}
-		
-		for(int i=f; i < t; i++){
-			if(stoneColors[i] == color && (i != except || stoneCounts[i] > 1)){
-				return false;
-			}
-		}
 
-		return true;
-	}
-*/	
 	public void move(int from, int count) throws WrongMoveException{
 		if(!canMove(from,count)) throw new WrongMoveException();
 		if(stoneColors[from] == Stone.Color.WHITE){
