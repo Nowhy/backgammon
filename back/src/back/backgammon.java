@@ -13,28 +13,34 @@ public class backgammon {
 		while(g.winner() == Stone.Color.NONE){
 			g.roll();
 			while(g.dices.isRolled()){
-			System.out.println("Please enter piece location using blankspace(like a b, a is the numer, b is move number): ");
-			sc = new Scanner(System.in);
-			String input = sc.nextLine();
-			if(input.split(" ").length == 2){
-				move = Integer.parseInt(input.split(" ")[0]);
-				movedic = Integer.parseInt(input.split(" ")[1]);
-				if(g.getBoard().getBarCount(Stone.Color.BLACK) > 0){
-					
-				}
-				if(g.getBoard().getBarCount(Stone.Color.WHITE) > 0){
-					
-				}
-				if(g.canMove(move-1, movedic)){
-					if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
-						try {	
-							g.move(move-1,movedic);
-						} catch (WrongMoveException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				System.out.println("Please enter piece location using blankspace(like a b, a is the numer, b is move number): ");
+				sc = new Scanner(System.in);
+				String input = sc.nextLine();	
+				if(input.split(" ").length == 1){
+					movedic = Integer.parseInt(input);
+					if(g.canPut(movedic)){
+						if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
+							try {	
+								g.put(movedic);
+							} catch (WrongMoveException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
-				}
+				}else if(input.split(" ").length == 2){
+					move = Integer.parseInt(input.split(" ")[0]);
+					movedic = Integer.parseInt(input.split(" ")[1]);
+					if(g.canMove(move-1, movedic)){
+						if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
+							try {	
+								g.move(move-1,movedic);
+							} catch (WrongMoveException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
 				else{
 					System.out.println("Error move!");
 				}

@@ -77,12 +77,13 @@ public class Board {
 		}
 		if(target > 24){
 			target = 48 - target;
-		}
-		if(target < 0){
+		}else if(target < 0){
 			target = Math.abs(target + 2);
 			//return hasAllInBase(who,from);
 		}
-		if(target == 24 || target == 0){
+		if(target == 24){
+			return true;
+		}else if(target == 0){
 			return true;
 		}else{
 			Stone.Color tarwho = stoneColors[target];
@@ -94,13 +95,13 @@ public class Board {
 		}
 	}
 	
-/*	public boolean canPut(Stone.Color color, int number){
+public boolean canPut(Stone.Color color, int number){
 		switch(color){
-		case WHITE:
+		case BLACK:
 			if(barWhite == 0) return false;
 			if(stoneColors[number-1] == Stone.Color.BLACK) return false;
 			break;
-		case BLACK:
+		case WHITE:
 			if(barBlack == 0) return false;
 			if(stoneColors[24-number] == Stone.Color.WHITE) return false;
 			break;
@@ -109,7 +110,7 @@ public class Board {
 		return true;
 	}
 	
-	public boolean hasAllInBase(Stone.Color color, int except){
+/*	public boolean hasAllInBase(Stone.Color color, int except){
 		int f;
 		int t;
 		switch(color){
@@ -145,6 +146,7 @@ public class Board {
 			}else if(stoneColors[target] == Stone.Color.BLACK){
 				removeStone(target);
 				barBlack++;
+				System.out.println("hello");
 				addStone(target,Stone.Color.WHITE);
 			}else{
 				addStone(target,Stone.Color.WHITE);
@@ -160,6 +162,7 @@ public class Board {
 			}else if(stoneColors[target] == Stone.Color.WHITE){
 				removeStone(target);
 				barWhite++;
+				System.out.println("hello111");
 				addStone(target,Stone.Color.BLACK);
 			}else{
 				addStone(target,Stone.Color.BLACK);
@@ -168,21 +171,20 @@ public class Board {
 		removeStone(from);
 	}
 	
-/*	public void put(Stone.Color color, int number) throws WrongMoveException{
+	public void put(Stone.Color color, int number) throws WrongMoveException{
 		if(!canPut(color,number)) throw new WrongMoveException();
-		
 		switch(color){
 		case WHITE:
-			barWhite--;
-			addStone(number-1,color);
+			barBlack--;
+			addStone(24-number,Stone.Color.BLACK);
 			break;
 		case BLACK:
-			barBlack--;
-			addStone(24-number,color);
+			barWhite--;
+			addStone(number-1,Stone.Color.WHITE);
 			break;
 		}		
 	}
-*/
+
 	private void removeStone(int from) {
 		if(stoneCounts[from] <= 0)
 			throw new IllegalArgumentException("Removing stone from zero at " + from);
@@ -196,7 +198,7 @@ public class Board {
 		if(stoneColors[to] != Stone.Color.NONE && stoneColors[to] != color)
 			throw new IllegalArgumentException("Adding wrong color of stone to " + to);
 		stoneCounts[to]++;
-		if(stoneColors[to] == Stone.Color.NONE){
+		if(stoneColors[to] == Stone.Color.NONE){ 
 			stoneColors[to] = color;
 		}
 	}

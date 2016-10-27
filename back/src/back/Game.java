@@ -8,7 +8,6 @@ public class Game {
 	Board board;
 	Stone.Color player;
 	Dices dices;
-	int moveOrNot = 0;
 	
 	public Game(){
 		generator = new Random();
@@ -56,15 +55,13 @@ public class Game {
 		if(!canMove(from,count)) throw new WrongMoveException();
 		board.move(from,count);
 		dices.takeDice(count);
-		moveOrNot = 1;
 		BoardDrawerCL.draw(board);
 	}
-/*	
+
 	public boolean canPut(int number){
 		if(!dices.isRolled()) return false;
 		if(!dices.isOnDice(number)) return false;
 		if(!board.canPut(player, number)) return false;
-		
 		return true;
 	}
 	
@@ -72,10 +69,9 @@ public class Game {
 		if(!canPut(number)) throw new WrongMoveException();
 		board.put(player,number);
 		dices.takeDice(number);
-		moveOrNot = 0;
 		BoardDrawerCL.draw(board);
 	}
-*/
+
 	public Board getBoard(){
 		return board;
 	}
