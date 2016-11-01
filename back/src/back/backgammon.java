@@ -1,9 +1,12 @@
 package back;
 
 import back.Game;
+import back.Stone.Color;
+
 import java.util.Scanner;
 
 public class backgammon {
+	private static final Color BLACK = null;
 	private static Scanner sc;
 
 	public static void main(String argv[]){
@@ -16,7 +19,9 @@ public class backgammon {
 				System.out.println("Please enter piece location using blankspace(like a b, a is the numer, b is move number): ");
 				sc = new Scanner(System.in);
 				String input = sc.nextLine();	
-				if(input.split(" ").length == 1){
+				if(input.equals("no")){
+				       break;			
+				}else if(input.split(" ").length == 1){
 					movedic = Integer.parseInt(input);
 					if(g.canPut(movedic)){
 						if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
@@ -51,4 +56,5 @@ public class backgammon {
 		System.out.println("Congratulations!" + g.winner() + " is the winner!");
 
 	}
+	
 }

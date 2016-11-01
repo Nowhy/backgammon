@@ -1,7 +1,5 @@
 package back;
 
-import back.Stone.Color;
-
 public class Stone {
 	public enum Color {
 		WHITE,

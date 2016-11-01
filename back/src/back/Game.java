@@ -2,6 +2,7 @@ package back;
 
 import java.util.Random;
 import back.BoardDrawerCL;
+import back.Stone;
 
 public class Game {
 	Random generator;
@@ -48,6 +49,16 @@ public class Game {
 		if(!dices.isOnDice(count)) return false;
 		if(!board.canMove(from, count)) return false;
 		if(board.getStone(from).color() == player) return false;
+		if(player == Stone.Color.BLACK){
+			if(!board.WhiteBearoff() && from + count >= 24){
+				return false;
+			}
+		}
+		if(player == Stone.Color.WHITE){
+			if(!board.BlackBearoff() && from - count <= -1){
+				return false;
+			}
+		}
 		return true;
 	}
 	

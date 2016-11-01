@@ -36,6 +36,24 @@ public class Board {
 		stoneCounts[5] = 3; stoneColors[5] = Stone.Color.BLACK;
 		
 	}
+	
+	public boolean BlackBearoff(){
+		int sum = 0;
+		for(int i = 23; i >= 7; i--){
+			if(stoneColors[i] ==  Stone.Color.BLACK) sum = getStoneCount(i) + sum;
+		}
+		System.out.println("hellogays" + sum);
+		return sum == 0;
+	}
+	
+	public boolean WhiteBearoff(){
+		int sum = 0;
+		for(int i = 0; i <= 18; i++){
+			if(stoneColors[i] ==  Stone.Color.WHITE) sum = getStoneCount(i) + sum;
+		}
+		System.out.println("helloles" + sum);
+		return sum == 0;
+	}
 
 	public int getStoneCount(int i) {
 		if(i < 0 || i > 24) return 0;
@@ -75,15 +93,9 @@ public class Board {
 			if(barBlack > 0) return false;
 			target = from - count;
 		}
-		if(target > 24){
-			target = 48 - target;
-		}else if(target < 0){
-			target = Math.abs(target + 2);
-			//return hasAllInBase(who,from);
-		}
-		if(target == 24){
+		if(target >= 24){
 			return true;
-		}else if(target == 0){
+		}else if(target <= 0){
 			return true;
 		}else{
 			Stone.Color tarwho = stoneColors[target];
@@ -115,31 +127,22 @@ public boolean canPut(Stone.Color color, int number){
 		if(!canMove(from,count)) throw new WrongMoveException();
 		if(stoneColors[from] == Stone.Color.WHITE){
 			int target = from + count;
-			if(target > 24){
-				target = 48 - target;
-			}
-			if(target == 24){
+			if(target >= 24){
 				homeWhite++;
 			}else if(stoneColors[target] == Stone.Color.BLACK){
 				removeStone(target);
 				barBlack++;
-				System.out.println("hello");
 				addStone(target,Stone.Color.WHITE);
 			}else{
 				addStone(target,Stone.Color.WHITE);
 			}
 		}else{
 			int target = from - count;
-			if(target < 0){
-				target = Math.abs(target + 2);
-				//return hasAllInBase(who,from);
-			}
-			if(target == -1){
+			if(target <= -1){
 				homeBlack++;
 			}else if(stoneColors[target] == Stone.Color.WHITE){
 				removeStone(target);
 				barWhite++;
-				System.out.println("hello111");
 				addStone(target,Stone.Color.BLACK);
 			}else{
 				addStone(target,Stone.Color.BLACK);
