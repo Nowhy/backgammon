@@ -26,7 +26,7 @@ public class backgammon {
 			while(g.dices.isRolled()){
 				if(input.equals("machine") ){
 					machine.play();
-					new Scanner(System.in).nextLine();
+					//new Scanner(System.in).nextLine();
 				}
 				else human.play();
 			}

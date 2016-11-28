@@ -31,7 +31,10 @@ public class Machine {
 		}
 		
 		//
-		while(machineMove(playStones));
+		if(!machineMove(playStones)){
+			System.out.println("NO VALID MOVE");
+			g.roll();
+		}
 		
 	}
 	
@@ -39,10 +42,11 @@ public class Machine {
 		Random ran = new Random();
 		int move1 = g.dices.getDiceOne();
 		int move2 = g.dices.getDiceTwo();
+		if(playStones.isEmpty()) return false;
 		int length = playStones.size();
 		int a = ran.nextInt(length);
-		System.out.println(a + "  dshjfsdh");
-		if(a == length){
+		if((g.player == Stone.Color.BLACK && g.getBoard().getBarCount(Stone.Color.WHITE) > 0)
+		|| (g.player == Stone.Color.WHITE && g.getBoard().getBarCount(Stone.Color.BLACK) > 0)){
 			if(g.canPut(move1)){
 				g.put(move1);
 				System.out.println("Valid Move!   Single Move: " + move1 );
@@ -56,45 +60,37 @@ public class Machine {
 				else if(g.player == Stone.Color.WHITE && !playStones.contains(move2-1)) playStones.add(move2 - 1);
 				return true;
 			}else{
-				machineMove(playStones);
+				return false;
 			}
 		}else if(playStones.get(a) != -1){
 			if(g.canMove(playStones.get(a), move1)){
 				System.out.println("Valid Move!   Common Move: " + (playStones.get(a)+1) + "  " + move1 );
 				g.move(playStones.get(a),move1);
 				
+			
+				if(g.player == Stone.Color.BLACK && playStones.get(a) - move1 >= 0 && !playStones.contains(playStones.get(a) - move1)) playStones.add(playStones.get(a) - move1);
+				else if(g.player == Stone.Color.WHITE && playStones.get(a) + move1 <= 24 && !playStones.contains(playStones.get(a) + move1)) playStones.add(playStones.get(a) + move1);
 				if(g.getBoard().getStoneCount(playStones.get(a)) == 0) playStones.remove(a);
-				if(g.player == Stone.Color.BLACK && !playStones.contains(playStones.get(a) - move1)) playStones.add(playStones.get(a) - move1);
-				else if(g.player == Stone.Color.WHITE && !playStones.contains(playStones.get(a) + move1)) playStones.add(playStones.get(a) + move1);
 				
 				return true;
 			}else if(g.canMove(playStones.get(a),move2)){
 				System.out.println("Valid Move!   Common Move: " + (playStones.get(a)+1) + "  " + move2 );
 				g.move(playStones.get(a),move2);
 				
+				if(g.player == Stone.Color.BLACK  && playStones.get(a) - move2 >= 0 && !playStones.contains(playStones.get(a) - move2)) playStones.add(playStones.get(a) - move2);
+				else if(g.player == Stone.Color.WHITE && playStones.get(a) + move2 <= 24 && !playStones.contains(playStones.get(a) + move2)) playStones.add(playStones.get(a) + move2);
 				if(g.getBoard().getStoneCount(playStones.get(a)) == 0) playStones.remove(a);
-				if(g.player == Stone.Color.BLACK && !playStones.contains(playStones.get(a) - move2)) playStones.add(playStones.get(a) - move2);
-				else if(g.player == Stone.Color.WHITE && !playStones.contains(playStones.get(a) + move2)) playStones.add(playStones.get(a) + move2);
 				
 				return true;
 			}else{
-				playStones.set(a, -1);
+				playStones.remove(a);
 				machineMove(playStones);
 			}
-		}else if(allFail(playStones)){
-			return false;
 		}else{
 			machineMove(playStones);
 		}
 		return true;
 	}
-	
-	boolean allFail(ArrayList<Integer> playStones){
-		boolean bool = true;
-		for(int i = 0; i < playStones.size() - 1; i++){
-			if(playStones.get(i) != -1) bool = false;
-		}
-		return bool;
-	}
+
 	
 }
