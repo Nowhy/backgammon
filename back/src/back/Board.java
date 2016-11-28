@@ -42,7 +42,6 @@ public class Board {
 		for(int i = 23; i >= 7; i--){
 			if(stoneColors[i] ==  Stone.Color.BLACK) sum = getStoneCount(i) + sum;
 		}
-		System.out.println("hellogays" + sum);
 		return sum == 0;
 	}
 	
@@ -51,7 +50,6 @@ public class Board {
 		for(int i = 0; i <= 18; i++){
 			if(stoneColors[i] ==  Stone.Color.WHITE) sum = getStoneCount(i) + sum;
 		}
-		System.out.println("helloles" + sum);
 		return sum == 0;
 	}
 

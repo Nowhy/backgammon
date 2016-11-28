@@ -4,7 +4,7 @@ public class BoardDrawerCL {
 	
 	public static void draw(Board b){
 		StringBuilder sb = new StringBuilder();
-		sb.append("--1---2---3---4---5---6---BW----7---8---9--10--11--12--\n");
+		sb.append("--1---2---3---4---5---6---BW----7---8---9--10--11--12--BLACKHOME\n");
 		for(int i=1; i<=5; i++){
 			drawTopStoneLine(i,b,sb);
 			sb.append("|\n");
@@ -18,7 +18,7 @@ public class BoardDrawerCL {
 			drawBottomStoneLine(i,b,sb);
 			sb.append("|\n");
 		}
-		sb.append("-24--23--22--21--20--19---BB---18--17--16--15--14--13--\n");
+		sb.append("-24--23--22--21--20--19---BB---18--17--16--15--14--13--WHITEHOME\n");
 		System.out.print(sb);
 	}
 
@@ -71,7 +71,9 @@ public class BoardDrawerCL {
 		for(int j=17; j>11; j--){
 			drawSegmentNumberH(j,b,sb);
 		}
-
+		if(b.getHome(Stone.Color.WHITE) > 0){
+			sb.append("| " + b.getHome(Stone.Color.WHITE) + " |");
+		}
 		sb.append("|\n");
 
 		for(int j=23; j>17; j--){
@@ -105,7 +107,9 @@ public class BoardDrawerCL {
 		for(int j=6; j<12; j++){
 			drawSegmentNumberH(j,b,sb);
 		}
-
+		if(b.getHome(Stone.Color.BLACK) > 0){
+			sb.append("| " + b.getHome(Stone.Color.BLACK) + " |");
+		}
 		sb.append("|\n");
 
 		for(int j=0; j<6; j++){
