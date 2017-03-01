@@ -6,7 +6,6 @@ import back.Stone.Color;
 import java.util.Scanner;
 
 public class backgammon {
-	private static final Color BLACK = null;
 	private static Scanner sc;
 
 	public static void main(String argv[]) throws WrongMoveException{
