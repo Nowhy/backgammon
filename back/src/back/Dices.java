@@ -6,8 +6,8 @@ public class Dices {
 	private int diceOne;
 	private int diceTwo;
 	
-	private int diceOneUses;
-	private int diceTwoUses;
+	public int diceOneUses;
+	public int diceTwoUses;
 	
 	private Random generator;
 	
@@ -71,6 +71,14 @@ public class Dices {
 	
 	public boolean isRolled(){
 		return diceOneUses > 0 || diceTwoUses > 0;
+	}
+	
+	public boolean isRolledOne(){
+		return diceOneUses > 0;
+	}
+	
+	public boolean isRolledTwo(){
+		return  diceTwoUses > 0;
 	}
 	
 	public int getDiceOne(){

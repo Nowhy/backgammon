@@ -19,7 +19,7 @@ public class BoardDrawerCL {
 			sb.append("|\n");
 		}
 		sb.append("-24--23--22--21--20--19---BB---18--17--16--15--14--13--WHITEHOME\n");
-		System.out.print(sb);
+		//System.out.print(sb);
 	}
 
 	private static void drawBottomStoneLine(int i, Board b, StringBuilder sb) {

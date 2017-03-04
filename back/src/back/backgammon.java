@@ -1,21 +1,20 @@
 package back;
 
 import back.Game;
-import back.Stone.Color;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
-public class backgammon {
-	private static Scanner sc;
+public class backgammon{
+//		private static Scanner sc;
 
-	public static void main(String argv[]) throws WrongMoveException{
+	public int run(String argv){
 		Game g = new Game();
 		Machine machine = null;
 		Human human = null;
-		System.out.println("Please choose human or machine(enter human / machine): ");
-		sc = new Scanner(System.in);
-		String input = sc.nextLine();
-		if(input.equals("machine")){
+//		System.out.println("Please choose human or machine(enter human / machine): ");
+//		sc = new Scanner(System.in);
+//		String input = sc.nextLine();
+		if(argv.equals("machine")){
 			machine = new Machine(g);
 		}
 		else human = new Human(g);
@@ -23,15 +22,18 @@ public class backgammon {
 		while(g.winner() == Stone.Color.NONE){
 			g.roll();
 			while(g.dices.isRolled()){
-				if(input.equals("machine") ){
+				if(argv.equals("machine") ){
 					machine.play();
 					//new Scanner(System.in).nextLine();
 				}
 				else human.play();
 			}
 		}
-		System.out.println("Congratulations!" + g.winner() + " is the winner!");
-
-	}
+        if(g.winner() == Stone.Color.BLACK){
+        	return 1;
+        }else{
+       		return 0;
+       	}
+        }
 	
 }

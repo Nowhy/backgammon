@@ -22,7 +22,6 @@ public class Game {
 			dices.rollDifferent();
 		}else{
 			dices.roll();
-			System.out.println(player + " Dices: " + dices.getDiceOne() + " " + dices.getDiceTwo() );
 		}
 		
 		switch(player){
@@ -62,13 +61,15 @@ public class Game {
 		return true;
 	}
 	
-	public void move(int from, int count) throws WrongMoveException{
-		if(!canMove(from,count)) throw new WrongMoveException();
+	public void move(int from, int count) {
+		if(!canMove(from,count)){
+			System.out.println("Error Movement");
+		}else{
 		board.move(from,count);
 		dices.takeDice(count);
 		BoardDrawerCL.draw(board);
+		}
 	}
-
 	public boolean canPut(int number){
 		if(!dices.isRolled()) return false;
 		if(!dices.isOnDice(number)) return false;
@@ -76,11 +77,14 @@ public class Game {
 		return true;
 	}
 	
-	public void put(int number) throws WrongMoveException{
-		if(!canPut(number)) throw new WrongMoveException();
+	public void put(int number){
+		if(!canPut(number)){
+			System.out.println("Error Movement");
+		}else{
 		board.put(player,number);
 		dices.takeDice(number);
 		BoardDrawerCL.draw(board);
+		}
 	}
 
 	public Board getBoard(){

@@ -12,18 +12,32 @@
  		this.g = g;
  	}
  	
- 	public void play() throws WrongMoveException{
- 		int move1 = g.dices.getDiceOne();
- 		int move2 = g.dices.getDiceTwo();
- 		if(!machineMove(move1) || !machineMove(move2)){
- 			//System.out.println(g.player);
- 			 g.roll();
+ 	public void play(){
+ 		boolean b1 = true;
+ 		boolean b2 = true;
+ 		if(g.dices.isRolledOne()){
+ 			if(!machineMove(g.dices.getDiceOne())){
+ 				b1 = false;
+ 			}
  		}
+ 		if(g.dices.isRolledTwo()){
+ 			if(!machineMove(g.dices.getDiceTwo())){
+ 				b2 = false;
+ 			}
+ 		}
+ 		if(!b1 || !b2){
+ 			g.dices.diceOneUses = 0;
+ 			g.dices.diceTwoUses = 0;
+ 		}
+ 			//System.out.println(g.dices.isRolled() + "   " + g.player);
+ 		// }
 
  	
  	}
  	
- 	boolean machineMove(int move) throws WrongMoveException{
+ 	
+ 	
+ 	boolean machineMove(int move){
  		ArrayList<Integer> playStones  = new ArrayList<Integer>();
  		if(g.player ==  Stone.Color.WHITE){
  			for(int i = 0; i < 24; i++){
@@ -38,11 +52,13 @@
  				}
  			}
  		}
- 		if(playStones.isEmpty()) return false;
+ 		
+ 		
+ 		
  		if((g.getBoard().getBarCount(Stone.Color.BLACK) > 0 && g.player == Stone.Color.WHITE)
  		||(g.getBoard().getBarCount(Stone.Color.WHITE) > 0 && g.player == Stone.Color.BLACK)){
  			if(g.canPut(move)){
- 				System.out.println("Valid Move!   Single Move: " + move );
+ 				//System.out.println("Valid Move!   Single Move: " + move );
  				g.put(move);
  				
  				if(g.player == Stone.Color.BLACK && !playStones.contains(24-move)) playStones.add(24 - move);
@@ -60,20 +76,23 @@
  			}else{
  				return false;
  			}
+ 		}
+ 			
+ 		if(playStones.isEmpty()){
+ 			return false;
  		}else if(!playStones.isEmpty()){
  			return BestMove(playStones,move);
  			
- 		}else{
- 			return false;
  		}
+		return true;
  	}
 
- 	boolean BestMove(ArrayList<Integer> playStones, int move) throws WrongMoveException{
+ 	boolean BestMove(ArrayList<Integer> playStones, int move){
  		for(int i = 0; i < playStones.size(); i++){
  			int selectedOne = playStones.get(i);
  			if(g.player == Stone.Color.BLACK && g.canMove(selectedOne, move)){
  				if(selectedOne - move < 0){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 		
  		 			if(g.player == Stone.Color.WHITE && !playStones.contains(selectedOne + move)) playStones.add(selectedOne + move);
@@ -83,7 +102,7 @@
  		 			}
  		 			return true;
  				}else if(g.getBoard().getStone(selectedOne - move).equals(Stone.Color.BLACK)){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 		
  		 			if(g.player == Stone.Color.WHITE && !playStones.contains(selectedOne + move)) playStones.add(selectedOne + move);
@@ -93,7 +112,7 @@
  		 			}
  		 			return true;
  				}else if(g.getBoard().getStone(selectedOne - move).equals( Stone.Color.WHITE )){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 			if(g.getBoard().getStoneCount(selectedOne) == 0){
  		 				playStones.remove(i);
@@ -101,7 +120,7 @@
  		 			}
  		 			return true;
  				}else{
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 			if(g.getBoard().getStoneCount(selectedOne) == 0){
  		 				playStones.remove(i);
@@ -111,7 +130,7 @@
  				}
  			}else if(g.player == Stone.Color.WHITE && g.canMove(selectedOne, move)){
  				if(selectedOne + move >= 24){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 		
  		 			if(g.player == Stone.Color.WHITE && !playStones.contains(selectedOne + move)) playStones.add(selectedOne + move);
@@ -121,7 +140,7 @@
  		 			}
  		 			return true;
  				}else if(g.getBoard().getStone(selectedOne + move).equals(Stone.Color.WHITE)){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 		
  		 			if(g.player == Stone.Color.WHITE && !playStones.contains(selectedOne + move)) playStones.add(selectedOne + move);
@@ -131,7 +150,7 @@
  		 			}
  		 			return true;
  				}else if(g.getBoard().getStone(selectedOne + move).equals( Stone.Color.BLACK )){
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 			if(g.getBoard().getStoneCount(selectedOne) == 0){
  		 				playStones.remove(i);
@@ -139,7 +158,7 @@
  		 			}
  		 			return true;
  				}else{
- 					System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
+ 					//System.out.println("Valid Move!   Common Move: " + (selectedOne+1) + "  " + move );
  		 			g.move(selectedOne,move);
  		 			if(g.getBoard().getStoneCount(selectedOne) == 0){
  		 				playStones.remove(i);

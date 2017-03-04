@@ -1,7 +1,8 @@
 package back;
 
 import back.Stone.Color;
-import back.BoardDrawerCL;
+import back.BoardMap;
+//import back.BoardDrawerCL;
 
 public class Board {
 	private int homeWhite;
@@ -13,7 +14,7 @@ public class Board {
 	
 	public Board(){
 		init();
-		BoardDrawerCL.draw(this);
+		//BoardDrawerCL.draw(this);
 	}
 	
 	public void init(){
@@ -116,8 +117,10 @@ public boolean canPut(Stone.Color color, int number){
 	}
 	
 
-	public void move(int from, int count) throws WrongMoveException{
-		if(!canMove(from,count)) throw new WrongMoveException();
+	public void move(int from, int count){
+		if(!canMove(from,count)){
+			System.out.println("Error Movement");
+		}else{
 		if(stoneColors[from] == Stone.Color.WHITE){
 			int target = from + count;
 			if(target >= 24){
@@ -142,10 +145,13 @@ public boolean canPut(Stone.Color color, int number){
 			}
 		}
 		removeStone(from);
+		}
 	}
 	
-	public void put(Stone.Color color, int number) throws WrongMoveException{
-		if(!canPut(color,number)) throw new WrongMoveException();
+	public void put(Stone.Color color, int number){
+		if(!canPut(color,number)){
+			System.out.println("Error Movement");
+		}else{
 		switch(color){
 		case WHITE:
 			barBlack--;
@@ -155,7 +161,10 @@ public boolean canPut(Stone.Color color, int number){
 			barWhite--;
 			addStone(number-1,Stone.Color.WHITE);
 			break;
+		default:
+			break;
 		}		
+		}
 	}
 
 	private void removeStone(int from) {

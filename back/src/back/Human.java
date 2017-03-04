@@ -21,12 +21,7 @@ public class Human {
 			movedic = Integer.parseInt(input);
 			if(g.canPut(movedic)){
 				if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
-					try {	
-						g.put(movedic);
-					} catch (WrongMoveException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					g.put(movedic);
 				}
 			}
 		}else if(input.split(" ").length == 2){
@@ -34,16 +29,12 @@ public class Human {
 			movedic = Integer.parseInt(input.split(" ")[1]);
 			if(g.canMove(move-1, movedic)){
 				if(movedic == g.dices.getDiceOne() || movedic == g.dices.getDiceTwo()){
-					try {	
-						g.move(move-1,movedic);
-					} catch (WrongMoveException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					g.move(move-1,movedic);
+					
 				}
 			}
 		else{
-			System.out.println("Error move!");
+			System.out.println("Error Movement!");
 		}
 	}
 	
