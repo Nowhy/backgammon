@@ -23,15 +23,14 @@
  		if(g.dices.isRolledTwo()){
  			if(!machineMove(g.dices.getDiceTwo())){
  				b2 = false;
+ 			}else if(g.dices.isRolledOne() && machineMove(g.dices.getDiceOne())){
+ 				b1 = true;
  			}
  		}
  		if(!b1 || !b2){
  			g.dices.diceOneUses = 0;
  			g.dices.diceTwoUses = 0;
  		}
- 			//System.out.println(g.dices.isRolled() + "   " + g.player);
- 		// }
-
  	
  	}
  	
