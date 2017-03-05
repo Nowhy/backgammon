@@ -31,12 +31,14 @@ public class Game {
 		case BLACK:
 			player = Stone.Color.WHITE;
 			break;
+//		case NONE:
+//			if(dices.getDiceOne() > dices.getDiceTwo()){
+//				player = Stone.Color.WHITE;
+//			}else{
+//				player = Stone.Color.BLACK;
+//			}
 		case NONE:
-			if(dices.getDiceOne() > dices.getDiceTwo()){
-				player = Stone.Color.WHITE;
-			}else{
-				player = Stone.Color.BLACK;
-			}
+			player = Stone.Color.WHITE;
 			break;
 		}
 		

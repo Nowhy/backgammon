@@ -13,13 +13,18 @@ public class backgammon{
 		Game g = new Game();
 		Machine machine = null;
 		Human human = null;
+		RandomPlay r = null;
 //		System.out.println("Please choose human or machine(enter human / machine): ");
 //		sc = new Scanner(System.in);
 //		String input = sc.nextLine();
 		if(argv.equals("machine")){
 			machine = new Machine(g);
-		}
-		else human = new Human(g);
+		}else if(argv.equals("random")){
+			r = new RandomPlay(g);
+		}else if(argv.equals("random&machine")){
+			machine = new Machine(g);
+			r = new RandomPlay(g);
+		}else human = new Human(g);
 		g.roll();
 		while(g.winner() == Stone.Color.NONE){
 			g.roll();
@@ -27,8 +32,12 @@ public class backgammon{
 				if(argv.equals("machine") ){
 					machine.play();
 					//new Scanner(System.in).nextLine();
-				}
-				else human.play();
+				}else if(argv.equals("random")){
+					r.play();
+				}else if(argv.equals("random&machine")){
+					r.play();
+					machine.play();
+				}else human.play();
 			}
 		}
 		int value = 0;

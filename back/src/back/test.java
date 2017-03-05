@@ -15,9 +15,9 @@ public class test {
 		private static String filenameTemp; 
 
 		 public static int finalWinner;
-		 public static void testMachine(int index, backgammon bg) throws IOException {
+		 public static void testGame(int index, backgammon bg) throws IOException {
 			 
-			if(bg.run("machine",index) == 1) setFinalWinner(getFinalWinner()+1);
+			if(bg.run("random&machine",index) == 1) setFinalWinner(getFinalWinner()+1);
 		       
 		 }
 		 
@@ -112,7 +112,7 @@ public class test {
 			  final int count = 100;
 			  do{
 			   index++;
-			   testMachine(index, bg);
+			   testGame(index, bg);
 			  }while(index<count);
 			  
 			  writeTxtFile( "final % is " + (float)getFinalWinner());//(float)count);

@@ -1,5 +1,7 @@
 package back;
 
+import back.Game;
+
 public class BoardDrawerCL {
 	
 	public static void draw(Board b){
@@ -19,7 +21,10 @@ public class BoardDrawerCL {
 			sb.append("|\n");
 		}
 		sb.append("-24--23--22--21--20--19---BB---18--17--16--15--14--13--WHITEHOME\n");
-		//System.out.print(sb);
+//		if(b.getHome(Stone.Color.WHITE) == 15 || b.getHome(Stone.Color.BLACK) == 15){
+//			System.out.print(sb);
+//		
+//		}
 	}
 
 	private static void drawBottomStoneLine(int i, Board b, StringBuilder sb) {
