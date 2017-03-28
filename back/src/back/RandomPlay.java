@@ -38,13 +38,13 @@ public class RandomPlay {
  	boolean ranMove(int move){
  		ArrayList<Integer> playStones  = new ArrayList<Integer>();
  		if(g.player ==  Stone.Color.WHITE){
- 			for(int i = 0; i < 24; i++){
+ 			for(int i = 23; i >= 0; i--){
  				if(g.getBoard().getStone(i).getColor() ==  Stone.Color.BLACK){
  					playStones.add(i);
  				}
  			}
  		}else{
- 			for(int i = 23; i >= 0; i--){
+ 			for(int i = 0; i < 24; i++){
  				if(g.getBoard().getStone(i).getColor() == Stone.Color.WHITE){
  					playStones.add(i);
  				}
@@ -57,8 +57,8 @@ public class RandomPlay {
  				//System.out.println("Valid Move!   Single Move: " + move );
  				g.put(move);
  				
- 				if(g.player == Stone.Color.BLACK && !playStones.contains(24-move)) playStones.add(24 - move);
- 				else if(g.player == Stone.Color.WHITE && !playStones.contains(move-1)) playStones.add(move - 1);
+ 				if(g.player == Stone.Color.WHITE && !playStones.contains(24-move)) playStones.add(24 - move);
+ 				else if(g.player == Stone.Color.BLACK && !playStones.contains(move-1)) playStones.add(move - 1);
  				
  				return true;
  			}else{
@@ -83,8 +83,8 @@ public class RandomPlay {
 		if(playStones.get(a) != -1){
 			if(g.canMove(playStones.get(a), move)){
 				g.move(playStones.get(a),move);
-				if(g.player == Stone.Color.BLACK && playStones.get(a) - move >= 0 && !playStones.contains(playStones.get(a) - move)) playStones.add(playStones.get(a) - move);
-				else if(g.player == Stone.Color.WHITE && playStones.get(a) + move <= 24 && !playStones.contains(playStones.get(a) + move)) playStones.add(playStones.get(a) + move);
+				if(g.player == Stone.Color.WHITE && playStones.get(a) - move >= 0 && !playStones.contains(playStones.get(a) - move)) playStones.add(playStones.get(a) - move);
+				else if(g.player == Stone.Color.BLACK && playStones.get(a) + move <= 24 && !playStones.contains(playStones.get(a) + move)) playStones.add(playStones.get(a) + move);
 				if(g.getBoard().getStoneCount(playStones.get(a)) == 0) playStones.remove(a);
 				
 				return true;

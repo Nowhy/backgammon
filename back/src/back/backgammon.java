@@ -11,44 +11,87 @@ public class backgammon{
 
 	public int run(String argv,int index) throws IOException{
 		Game g = new Game();
-		Machine machine = null;
+		Simple machine = null;
+		SimpleAdvanced machineA = null;
 		Human human = null;
 		RandomPlay r = null;
 //		System.out.println("Please choose human or machine(enter human / machine): ");
 //		sc = new Scanner(System.in);
 //		String input = sc.nextLine();
-		if(argv.equals("machine")){
-			machine = new Machine(g);
-		}else if(argv.equals("random")){
+		switch(argv){
+		case "machine" :
+			machine = new Simple(g);
+			break;
+		case "random" :
 			r = new RandomPlay(g);
-		}else if(argv.equals("random&machine")){
-			machine = new Machine(g);
+			break;
+		case "random&machine" :
+			machine = new Simple(g);
 			r = new RandomPlay(g);
-		}else human = new Human(g);
+			break;
+		case "random&advanced" :
+			machineA = new SimpleAdvanced(g);
+			r = new RandomPlay(g);
+			break;
+		default:
+			human = new Human(g);
+			break;
+			
+		}
 		g.roll();
 		while(g.winner() == Stone.Color.NONE){
 			g.roll();
 			while(g.dices.isRolled()){
-				if(argv.equals("machine") ){
+				switch(argv){
+				case "machine" :
 					machine.play();
-					//new Scanner(System.in).nextLine();
-				}else if(argv.equals("random")){
+					break;
+				case "random" :
 					r.play();
-				}else if(argv.equals("random&machine")){
-					r.play();
+					break;
+				case "random&machine" :
 					machine.play();
-				}else human.play();
+					break;
+				case "random&advanced" :
+					machineA.play();
+					break;
+				default:
+					human.play();
+					break;
+					
+				}
+			}
+			g.roll();
+			while(g.dices.isRolled()){
+				switch(argv){
+				case "machine" :
+					machine.play();
+					break;
+				case "random" :
+					r.play();
+					break;
+				case "random&machine" :
+					r.play();
+					break;
+				case "random&advanced" :
+					r.play();
+					break;
+				default:
+					human.play();
+					break;
+					
+				}
 			}
 		}
 		int value = 0;
 		for(int i = 0;i < 24; i++){
     		value = value + (i+1)*g.getBoard().getStoneCount(i);
     	}
-        if(g.winner() == Stone.Color.BLACK){
-        	test.writeTxtFile(index + "\t" +"  "+ "BLACK\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.WHITE))+"\t" + "     "+value+"\t" + "\n");
+        if(g.winner() == Stone.Color.WHITE){
+        	//test.writeTxtFile(index + "\t" +"  "+ "BLACK\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.WHITE))+"\t" + "     "+value+"\t" + "\n");
         	return 1;
         }else{
-        	test.writeTxtFile(index + "\t" +"  "+ "WHITE\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.BLACK))+"\t" + "     "+value+"\t" +"\n");
+        	//test.writeTxtFile(index + "\t" +"  "+ "WHITE\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.BLACK))+"\t" + "     "+value+"\t" +"\n");
        		return 0;
        	}
         }

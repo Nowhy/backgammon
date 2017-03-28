@@ -1,7 +1,5 @@
 package back;
 
-import back.Game;
-
 public class BoardDrawerCL {
 	
 	public static void draw(Board b){

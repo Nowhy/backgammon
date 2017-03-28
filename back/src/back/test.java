@@ -15,6 +15,22 @@ public class test {
 		private static String filenameTemp; 
 
 		 public static int finalWinner;
+		 
+		 public static void main(String[] args) throws IOException{
+				 creatTxtFile("testSimple");
+				  writeTxtFile("testID    " + "winner   " +  " count    " + "value" );
+				  backgammon bg = new backgammon();
+				  int index = 0;
+				  setFinalWinner(0);
+				  final int count = 100;
+				  do{
+				   index++;
+				   testGame(index, bg);
+				  }while(index<count);
+				  
+				  writeTxtFile( "final (BLACK)% is " + (float)getFinalWinner());//(float)count);
+		 }
+			
 		 public static void testGame(int index, backgammon bg) throws IOException {
 			 
 			if(bg.run("random&machine",index) == 1) setFinalWinner(getFinalWinner()+1);
@@ -101,20 +117,4 @@ public class test {
 			} 
 			return flag; 
 		} 
-
-		 
-		public static void main(String[] args) throws IOException{
-			 creatTxtFile("testSimple");
-			  writeTxtFile("testID    " + "winner   " +  " count    " + "value" );
-			  backgammon bg = new backgammon();
-			  int index = 0;
-			  setFinalWinner(0);
-			  final int count = 100;
-			  do{
-			   index++;
-			   testGame(index, bg);
-			  }while(index<count);
-			  
-			  writeTxtFile( "final % is " + (float)getFinalWinner());//(float)count);
-		 }
 }

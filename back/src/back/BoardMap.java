@@ -5,9 +5,36 @@ public class BoardMap {
 	
 	static void getMap0(Stone.Color[] stoneColors, int[] stoneCounts){
 		stoneCounts[16] = 5; stoneColors[16] = Stone.Color.WHITE;
-		stoneCounts[18] = 3; stoneColors[18] = Stone.Color.WHITE;
+		stoneCounts[18] = 10; stoneColors[18] = Stone.Color.WHITE;
 		stoneCounts[7] = 5; stoneColors[7] = Stone.Color.BLACK;
-		stoneCounts[5] = 3; stoneColors[5] = Stone.Color.BLACK;
+		stoneCounts[5] = 10; stoneColors[5] = Stone.Color.BLACK;
+	}
+	
+	static void getMap1(Stone.Color[] stoneColors, int[] stoneCounts){
+		stoneCounts[16] = 5; stoneColors[16] = Stone.Color.WHITE;
+		stoneCounts[18] = 10; stoneColors[18] = Stone.Color.WHITE;
+		stoneCounts[7] = 5; stoneColors[7] = Stone.Color.BLACK;
+		stoneCounts[5] = 10; stoneColors[5] = Stone.Color.BLACK;
+		stoneCounts[0] = 1; stoneColors[0] = Stone.Color.WHITE;
+		stoneCounts[23] = 1; stoneColors[23] = Stone.Color.BLACK;
+	}
+	
+	static void getMap2(Stone.Color[] stoneColors, int[] stoneCounts){
+		stoneCounts[16] = 5; stoneColors[16] = Stone.Color.WHITE;
+		stoneCounts[18] = 10; stoneColors[18] = Stone.Color.WHITE;
+		stoneCounts[7] = 5; stoneColors[7] = Stone.Color.BLACK;
+		stoneCounts[5] = 10; stoneColors[5] = Stone.Color.BLACK;
+		stoneCounts[0] = 2; stoneColors[0] = Stone.Color.WHITE;
+		stoneCounts[23] = 2; stoneColors[23] = Stone.Color.BLACK;
+	}
+	
+	static void getMap3(Stone.Color[] stoneColors, int[] stoneCounts){
+		stoneCounts[16] = 5; stoneColors[16] = Stone.Color.WHITE;
+		stoneCounts[18] = 10; stoneColors[18] = Stone.Color.WHITE;
+		stoneCounts[7] = 5; stoneColors[7] = Stone.Color.BLACK;
+		stoneCounts[5] = 10; stoneColors[5] = Stone.Color.BLACK;
+		stoneCounts[0] = 3; stoneColors[0] = Stone.Color.WHITE;
+		stoneCounts[23] = 3; stoneColors[23] = Stone.Color.BLACK;
 	}
 	
 
