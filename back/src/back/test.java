@@ -32,8 +32,8 @@ public class test {
 		 }
 			
 		 public static void testGame(int index, backgammon bg) throws IOException {
-			 
-			if(bg.run("random&machine",index) == 1) setFinalWinner(getFinalWinner()+1);
+			 //"random", "simple", "advanced","human" or "ann"
+			if(bg.run("advanced","random",index) == 1) setFinalWinner(getFinalWinner()+1);
 		       
 		 }
 		 

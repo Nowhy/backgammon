@@ -8,86 +8,41 @@ import back.Game;
 
 public class backgammon{
 //		private static Scanner sc;
+	Game game;
+	Simple simple;
+	SimpleAdvanced advanced;
+	Human human;
+	RandomPlay ran;
+	ANN ann;
 
-	public int run(String argv,int index) throws IOException{
-		Game g = new Game();
-		Simple machine = null;
-		SimpleAdvanced machineA = null;
-		Human human = null;
-		RandomPlay r = null;
+	public int run(String argv1,String argv2,int index) throws IOException{
+		game = new Game();
 //		System.out.println("Please choose human or machine(enter human / machine): ");
 //		sc = new Scanner(System.in);
 //		String input = sc.nextLine();
-		switch(argv){
-		case "machine" :
-			machine = new Simple(g);
-			break;
-		case "random" :
-			r = new RandomPlay(g);
-			break;
-		case "random&machine" :
-			machine = new Simple(g);
-			r = new RandomPlay(g);
-			break;
-		case "random&advanced" :
-			machineA = new SimpleAdvanced(g);
-			r = new RandomPlay(g);
-			break;
-		default:
-			human = new Human(g);
-			break;
-			
+		getPlayer(argv1);
+		if(argv1 != argv2){
+			getPlayer(argv2);
 		}
-		g.roll();
-		while(g.winner() == Stone.Color.NONE){
-			g.roll();
-			while(g.dices.isRolled()){
-				switch(argv){
-				case "machine" :
-					machine.play();
-					break;
-				case "random" :
-					r.play();
-					break;
-				case "random&machine" :
-					machine.play();
-					break;
-				case "random&advanced" :
-					machineA.play();
-					break;
-				default:
-					human.play();
-					break;
-					
-				}
+		
+		game.roll();
+		while(game.winner() == Stone.Color.NONE){
+			game.roll();
+			while(game.dices.isRolled()){
+				playerPlay(argv1);
 			}
-			g.roll();
-			while(g.dices.isRolled()){
-				switch(argv){
-				case "machine" :
-					machine.play();
-					break;
-				case "random" :
-					r.play();
-					break;
-				case "random&machine" :
-					r.play();
-					break;
-				case "random&advanced" :
-					r.play();
-					break;
-				default:
-					human.play();
-					break;
-					
+			if(argv1 != argv2){
+				game.roll();
+				while(game.dices.isRolled()){
+					playerPlay(argv2);
 				}
 			}
 		}
 		int value = 0;
 		for(int i = 0;i < 24; i++){
-    		value = value + (i+1)*g.getBoard().getStoneCount(i);
+    		value = value + (i+1)*game.getBoard().getStoneCount(i);
     	}
-        if(g.winner() == Stone.Color.WHITE){
+        if(game.winner() == Stone.Color.WHITE){
         	//test.writeTxtFile(index + "\t" +"  "+ "BLACK\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.WHITE))+"\t" + "     "+value+"\t" + "\n");
         	return 1;
         }else{
@@ -95,5 +50,47 @@ public class backgammon{
        		return 0;
        	}
         }
+	
+	void getPlayer(String str){
+		switch(str){
+		case "random" :
+			ran = new RandomPlay(game);
+			break;
+		case "simple" :
+			simple = new Simple(game);
+			break;
+		case "advanced" :
+			advanced = new SimpleAdvanced(game);
+			break;
+		case "ANN" :
+			ann = new ANN(game);
+			break;
+		default:
+			human = new Human(game);
+			break;
+			
+		}
+	}
+	
+	void playerPlay(String str){
+		switch(str){
+		case "random" :
+			ran.play();
+			break;
+		case "simple" :
+			simple.play();
+			break;
+		case "advanced" :
+			advanced.play();
+			break;
+		case "ANN" :
+			ann.play();
+			break;
+		default:
+			human.play();
+			break;
+			
+		}
+	}
 	
 }

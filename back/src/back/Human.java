@@ -2,7 +2,7 @@ package back;
 
 import java.util.Scanner;
 
-public class Human {
+public class Human{
 	public static Scanner sc;
 	int move,movedic;
 	Game g;
