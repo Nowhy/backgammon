@@ -1,8 +1,10 @@
 package back;
 
+import java.io.IOException;
+
 public class BoardDrawerCL {
 	
-	public static void draw(Board b){
+	public static void draw(Board b) throws IOException{
 		StringBuilder sb = new StringBuilder();
 		sb.append("--1---2---3---4---5---6---BW----7---8---9--10--11--12--BLACKHOME\n");
 		for(int i=1; i<=5; i++){
@@ -23,6 +25,8 @@ public class BoardDrawerCL {
 //			System.out.print(sb);
 //		
 //		}
+		System.out.print(sb);
+//		test.writeTxtFile(sb.toString(),"trainANN.txt");
 	}
 
 	private static void drawBottomStoneLine(int i, Board b, StringBuilder sb) {

@@ -7,42 +7,147 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
-
+import java.util.ArrayList;
+import java.util.Map;
 import back.backgammon;
 
 public class test {
-		private static String filenameTemp; 
 
-		 public static int finalWinner;
+		 public static int AWinner=0,BWinner=0;
+		 public static int best = 0;
+		 public static Map<Integer,Map<Integer,ArrayList<Double>>> temp;
 		 
 		 public static void main(String[] args) throws IOException{
-				 creatTxtFile("testSimple");
-				  writeTxtFile("testID    " + "winner   " +  " count    " + "value" );
-				  backgammon bg = new backgammon();
-				  int index = 0;
-				  setFinalWinner(0);
+				  creatTxtFile("testRandom");
+				  creatTxtFile("testSimple");
+				  writeTxtFile("testID    " + "winner   " +  " count    " + "value", "testRandom.txt");
+				  writeTxtFile("testID    " + "winner   " +  " count    " + "value", "testSimple.txt");
 				  final int count = 100;
-				  do{
-				   index++;
-				   testGame(index, bg);
-				  }while(index<count);
+				  int round;
+				  int wholeround = 0;
+				  Weight.initLayer();
 				  
-				  writeTxtFile( "final (BLACK)% is " + (float)getFinalWinner());//(float)count);
+				  do{
+					  round = 0;
+				  do{
+					  int index = 0;
+					  setAWinner(0);
+					  setBWinner(0);
+					  do{
+						  index++;
+						  if(index == 1){
+							  testBGame(index,"ANN","ANN");
+						  }if(index%2 == 1){
+							  temp = Weight.betterlayers;
+							  Weight.setBetterWeight(Weight.getWeight());
+							  Weight.setWeight(temp);
+							  testBGame(index,"ANN","ANN");
+						  }else {
+							  temp = Weight.betterlayers;
+							  Weight.setBetterWeight(Weight.getWeight());
+							  Weight.setWeight(temp);
+							  testAGame(index,"ANN","ANN");
+						  }
+					  }while(index<count);
+					  //writeTxtFile( "final (WHITE first)% for ANN VS ANN is " + (float)getFinalWinner(),"testSimple.txt");
+				  
+					  System.out.println(getAWinner() + getBWinner() );
+					  if(getAWinner()  + getBWinner()  < 45){
+						  temp = Weight.betterlayers;
+						  Weight.setBetterWeight(Weight.getWeight());
+						  Weight.setWeight(Weight.randomLayer(Weight.betterlayers));		
+						  break;
+					  }	else if(getAWinner()  + getBWinner()  >= 45){
+						  Weight.setWeight(Weight.randomLayer(Weight.betterlayers));
+					  }
+
+					  
+					  round++;
+				  }while(round < 100);
+					 
+				  //writeTxtFile("After " + wholeround + " times:" ,"testSimple.txt");
+				  int index = 0;
+				  setAWinner(0);
+				  setBWinner(0);
+				  do{
+					  index++;
+					  if(index%2 == 1){
+						  testAGame(index,"ANN" ,"random");
+					  }else{
+						  testBGame(index,"random" ,"ANN");
+					  }
+					 
+				  }while(index<count);
+				  //"final (BLACK first)% for ANN VS random " +
+				   writeTxtFile( ""+(getAWinner() + getBWinner()),"testRandom.txt");
+
+
+				    index = 0;
+				    setAWinner(0);
+					setBWinner(0);
+					  do{
+						  index++;
+						  if(index%2 == 1){
+							  testAGame(index,"ANN" ,"simple");
+						  }else{
+							  testBGame(index,"simple" ,"ANN");
+						  }
+					  }while(index<count);
+					  //"final (BLACK first)% for ANN VS simple " +
+					  writeTxtFile( ""+(getAWinner() + getBWinner()),"testSimple.txt");
+					   
+				   
+				   
+				   String ann = "";
+		        	for(int i = 0; i < Weight.betterlayers.size();i ++){
+		      			 for(int j = 0; j < Weight.betterlayers.get(i).size(); j++){
+		      				 for(int m = 0; m < Weight.betterlayers.get(i).get(j).size(); m++){
+		      					 ann = ann + Weight.betterlayers.get(i).get(j).get(m) + "  ";
+		      				 }
+		      				 ann = ann + "\n";
+		      			 }
+		      			 ann = ann + "\n";
+		      		 }
+		      	  writeTxtFile("Time: " + wholeround +"\n" + ann, "ANN.txt");
+				      wholeround++;
+				  }while(wholeround < 100);
+					 
+				
+//				  testAGame(0,"human" , "ANN");
 		 }
 			
-		 public static void testGame(int index, backgammon bg) throws IOException {
-			 //"random", "simple", "advanced","human" or "ann"
-			if(bg.run("advanced","random",index) == 1) setFinalWinner(getFinalWinner()+1);
+		 public static void testAGame(int index,String A, String B) throws IOException {
+			 backgammon bg = new backgammon();	 
+			 //"random", "simple","human", "advanced" or "ANN"
+			if(bg.run(index, A,B) == 0){
+				setAWinner(getAWinner()+1);
+			}
 		       
 		 }
 		 
-		public static void setFinalWinner(int num){
-			finalWinner = num;
+		 public static void testBGame(int index,String A, String B) throws IOException {
+			 backgammon bg = new backgammon();	 
+			 //"random", "simple","human", "advanced" or "ANN"
+			if(bg.run(index, A,B) == 1){
+				setBWinner(getBWinner()+1);
+			}
+		       
+		 }
+		 
+		public static void setAWinner(int num){
+			AWinner = num;
 		}
 		
-		public static int getFinalWinner(){
-			return finalWinner;
+		public static int getAWinner(){
+			return AWinner;
+		}
+		
+		public static void setBWinner(int num){
+			BWinner = num;
+		}
+		
+		public static int getBWinner(){
+			return BWinner;
 		}
 		
 		/** 
@@ -52,7 +157,7 @@ public class test {
 		*/ 
 		public static boolean creatTxtFile(String name) throws IOException { 
 		boolean flag = false; 
-		filenameTemp =  name + ".txt"; 
+		String filenameTemp =  name + ".txt"; 
 		File filename = new File(filenameTemp); 
 		if (!filename.exists()) { 
 		filename.createNewFile(); 
@@ -68,7 +173,7 @@ public class test {
 		*          
 		* @throws IOException 
 		*/ 
-		public static boolean writeTxtFile (String newStr) throws IOException { 
+		public static boolean writeTxtFile (String newStr, String filename) throws IOException { 
 		boolean flag = false; 
 		String filein = newStr; 
 		String temp = ""; 
@@ -80,7 +185,7 @@ public class test {
 		FileOutputStream fos = null; 
 		PrintWriter pw = null; 
 		try {
-			File file = new File(filenameTemp); 
+			File file = new File(filename); 
 			fis = new FileInputStream(file); 
 			isr = new InputStreamReader(fis); 
 			br = new BufferedReader(isr); 
@@ -117,4 +222,6 @@ public class test {
 			} 
 			return flag; 
 		} 
+		
 }
+

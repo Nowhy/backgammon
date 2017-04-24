@@ -2,18 +2,29 @@ package back;
 
 import java.util.Random;
 
-public class Dices {
+public class Dices implements Cloneable {
 	private int diceOne;
 	private int diceTwo;
 	
 	public int diceOneUses;
 	public int diceTwoUses;
-	
 	private Random generator;
 	
 	public Dices(){
 		generator = new Random();
 	}
+	
+	protected Object clone() 
+	  { 
+		Dices d = new Dices();
+		d.diceOne = this.diceOne;
+		d.diceTwo = this.diceTwo;
+		d.diceOneUses = this.diceOneUses;
+		d.diceTwoUses = this.diceTwoUses;
+
+	  return d; 
+	  }
+	
 	
 	public Dices(Dices d) {
 		diceOne = d.diceOne;
@@ -56,6 +67,7 @@ public class Dices {
 			throw new IllegalArgumentException("Trying to take invalid dice " + number);
 		}
 	}
+	
 	
 	public int takeDiceOne(){
 		if(diceOneUses == 0) return 0;

@@ -15,7 +15,7 @@ public class backgammon{
 	RandomPlay ran;
 	ANN ann;
 
-	public int run(String argv1,String argv2,int index) throws IOException{
+	public int run(int index, String argv1,String argv2) throws IOException{
 		game = new Game();
 //		System.out.println("Please choose human or machine(enter human / machine): ");
 //		sc = new Scanner(System.in);
@@ -25,15 +25,15 @@ public class backgammon{
 			getPlayer(argv2);
 		}
 		
-		game.roll();
+		
 		while(game.winner() == Stone.Color.NONE){
 			game.roll();
-			while(game.dices.isRolled()){
+			while(game.dices.isRolled() && !game.isEnded()){
 				playerPlay(argv1);
 			}
 			if(argv1 != argv2){
 				game.roll();
-				while(game.dices.isRolled()){
+				while(game.dices.isRolled() && !game.isEnded()){
 					playerPlay(argv2);
 				}
 			}
@@ -43,15 +43,15 @@ public class backgammon{
     		value = value + (i+1)*game.getBoard().getStoneCount(i);
     	}
         if(game.winner() == Stone.Color.WHITE){
-        	//test.writeTxtFile(index + "\t" +"  "+ "BLACK\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.WHITE))+"\t" + "     "+value+"\t" + "\n");
-        	return 1;
+//        	test.writeTxtFile(index + "\t" +"  "+ "WHITE\t" +"      "+ (15-game.getBoard().getHome(Stone.Color.BLACK))+"\t" + "       "+value+"\t" + "\n","testRandom.txt"); 
+        	return 0;
         }else{
-        	//test.writeTxtFile(index + "\t" +"  "+ "WHITE\t" +"    "+ (15-g.getBoard().getHome(Stone.Color.BLACK))+"\t" + "     "+value+"\t" +"\n");
-       		return 0;
+//        	test.writeTxtFile(index + "\t" +"  "+ "BLACK\t" +"      "+ (15-game.getBoard().getHome(Stone.Color.WHITE))+"\t" + "       "+value+"\t" +"\n","testRandom.txt");
+        	return 1;
        	}
         }
 	
-	void getPlayer(String str){
+	void getPlayer(String str) throws IOException{
 		switch(str){
 		case "random" :
 			ran = new RandomPlay(game);
@@ -72,7 +72,7 @@ public class backgammon{
 		}
 	}
 	
-	void playerPlay(String str){
+	void playerPlay(String str) throws IOException{
 		switch(str){
 		case "random" :
 			ran.play();

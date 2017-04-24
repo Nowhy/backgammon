@@ -1,5 +1,6 @@
 package back;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,89 +14,142 @@ public class RandomPlay {
 		this.g = g;
 	}
 	
-	public void play(){
- 		boolean b1 = true;
- 		boolean b2 = true;
- 		if(g.dices.isRolledOne()){
- 			if(!ranMove(g.dices.getDiceOne())){
- 				b1 = false;
- 			}
- 		}
- 		if(g.dices.isRolledTwo()){
- 			if(!ranMove(g.dices.getDiceTwo())){
- 				b2 = false;
- 			}else if(g.dices.isRolledOne() && ranMove(g.dices.getDiceOne())){
- 				b1 = true;
- 			}
- 		}
- 		if(!b1 || !b2){
- 			g.dices.diceOneUses = 0;
- 			g.dices.diceTwoUses = 0;
- 		}
+	public void play() throws IOException{
+//		BoardDrawerCL.draw(g.getBoard());
+//		System.out.println("Dice One: " + g.dices.getDiceOne() + "   Remaining Time: " + g.dices.diceOneUses);
+//		System.out.println("Dice Two: " + g.dices.getDiceTwo() + "   Remaining Time: " + g.dices.diceTwoUses);
+//		if(g.player == Stone.Color.BLACK){
+//			System.out.println("WHITE");
+//		}else{
+//			System.out.println("BLACK");
+//		}
+//		
+		if(g.dices.diceOneUses > 0 && g.dices.diceTwoUses == 0){
+			if(!canPut(g.dices.getDiceOne()) && !canMove(g.dices.getDiceOne())){
+				g.dices.diceOneUses = 0;
+			}else if(canPut(g.dices.getDiceOne())){
+				ranPut(g.dices.getDiceOne());
+			}else if(canMove(g.dices.getDiceOne())){
+	 			ranMove(g.dices.getDiceOne());
+	 		}
+		}
+		if(g.dices.diceTwoUses > 0 && g.dices.diceOneUses == 0){
+			if(!canPut(g.dices.getDiceTwo()) && !canMove(g.dices.getDiceTwo())){
+				g.dices.diceTwoUses = 0;
+			}else if(canPut(g.dices.getDiceTwo())){
+				ranPut(g.dices.getDiceTwo());
+			}else if(canMove(g.dices.getDiceTwo())){
+	 			ranMove(g.dices.getDiceTwo());
+	 		}
+		}
+		
+		if(g.dices.diceTwoUses > 0 && g.dices.diceOneUses > 0){
+			//System.out.println("dices :" + g.dices.getDiceOne() + "     " + g.dices.getDiceTwo());
+			if(!canPut(g.dices.getDiceOne()) && !canMove(g.dices.getDiceOne()) && !canPut(g.dices.getDiceOne()) && !canMove(g.dices.getDiceOne())){
+				g.dices.diceOneUses = 0;
+				g.dices.diceTwoUses = 0;
+			}else if(canPut(g.dices.getDiceOne())){
+				ranPut(g.dices.getDiceOne());
+			}else if(canPut(g.dices.getDiceTwo())){
+				ranPut(g.dices.getDiceTwo());
+			}else if(canMove(g.dices.getDiceOne())){
+				ranMove(g.dices.getDiceOne());
+			}else if(canMove(g.dices.getDiceTwo())){
+				ranMove(g.dices.getDiceTwo());
+			}
+		}
  	
  	}
 	
- 	boolean ranMove(int move){
- 		ArrayList<Integer> playStones  = new ArrayList<Integer>();
+	
+
+	boolean canPut(int move){
+ 		if((g.getBoard().getBarCount(Stone.Color.BLACK) > 0 && g.player == Stone.Color.WHITE)
+ 		||(g.getBoard().getBarCount(Stone.Color.WHITE) > 0 && g.player == Stone.Color.BLACK)){
+ 			if(g.canPut(move)){
+ 				return true;
+ 			}
+ 		}
+ 		return false;
+ 	}
+	
+	void ranPut(int move){
+ 		if((g.getBoard().getBarCount(Stone.Color.BLACK) > 0 && g.player == Stone.Color.WHITE)
+ 		||(g.getBoard().getBarCount(Stone.Color.WHITE) > 0 && g.player == Stone.Color.BLACK)){
+ 			if(g.canPut(move)){
+ 				g.put(move);
+ 			}
+ 		}
+	}
+
+
+	
+	boolean canMove(int move){
+		ArrayList<Integer> playStones  = new ArrayList<Integer>();
  		if(g.player ==  Stone.Color.WHITE){
  			for(int i = 23; i >= 0; i--){
- 				if(g.getBoard().getStone(i).getColor() ==  Stone.Color.BLACK){
+ 				if(g.getBoard().getStone(i).getColor() ==  Stone.Color.BLACK && g.canMove(i, move)){
  					playStones.add(i);
  				}
  			}
  		}else{
  			for(int i = 0; i < 24; i++){
- 				if(g.getBoard().getStone(i).getColor() == Stone.Color.WHITE){
+ 				if(g.getBoard().getStone(i).getColor() == Stone.Color.WHITE && g.canMove(i, move)){
  					playStones.add(i);
  				}
  			}
  		}
-
- 		if((g.getBoard().getBarCount(Stone.Color.BLACK) > 0 && g.player == Stone.Color.WHITE)
- 		||(g.getBoard().getBarCount(Stone.Color.WHITE) > 0 && g.player == Stone.Color.BLACK)){
- 			if(g.canPut(move)){
- 				//System.out.println("Valid Move!   Single Move: " + move );
- 				g.put(move);
- 				
- 				if(g.player == Stone.Color.WHITE && !playStones.contains(24-move)) playStones.add(24 - move);
- 				else if(g.player == Stone.Color.BLACK && !playStones.contains(move-1)) playStones.add(move - 1);
- 				
- 				return true;
- 			}else{
- 				return false;
- 			}
- 		}
- 			
- 		if(playStones.isEmpty()){
- 			return false;
- 		}else if(!playStones.isEmpty()){
- 			return randomMove(playStones,move);
- 		}
+		
+ 		
+ 		if(playStones.size() == 0) return false;
+		
+		Random ran = new Random();
+		int length = playStones.size();
+		int a = ran.nextInt(length);
+		if(playStones.get(a) != -1){
+			if(g.canMove(playStones.get(a), move)){
+				return true;
+			}else{
+				playStones.remove(a);
+				canMove(move);
+			}
+		}else{
+			canMove(move);
+		}
 		return false;
- 	}
+	}
+
+
 
 	
-	boolean randomMove(ArrayList<Integer> playStones, int move){
+	void ranMove(int move){
+		ArrayList<Integer> playStones  = new ArrayList<Integer>();
+ 		if(g.player ==  Stone.Color.WHITE){
+ 			for(int i = 23; i >= 0; i--){
+ 				if(g.getBoard().getStone(i).getColor() ==  Stone.Color.BLACK && g.canMove(i, move)){
+ 					playStones.add(i);
+ 				}
+ 			}
+ 		}else{
+ 			for(int i = 0; i < 24; i++){
+ 				if(g.getBoard().getStone(i).getColor() == Stone.Color.WHITE && g.canMove(i, move)){
+ 					playStones.add(i);
+ 				}
+ 			}
+ 		}
 		Random ran = new Random();
-		if(playStones.isEmpty()) return false;
 		int length = playStones.size();
 		int a = ran.nextInt(length);
 		if(playStones.get(a) != -1){
 			if(g.canMove(playStones.get(a), move)){
 				g.move(playStones.get(a),move);
-				if(g.player == Stone.Color.WHITE && playStones.get(a) - move >= 0 && !playStones.contains(playStones.get(a) - move)) playStones.add(playStones.get(a) - move);
-				else if(g.player == Stone.Color.BLACK && playStones.get(a) + move <= 24 && !playStones.contains(playStones.get(a) + move)) playStones.add(playStones.get(a) + move);
-				if(g.getBoard().getStoneCount(playStones.get(a)) == 0) playStones.remove(a);
-				
-				return true;
 			}else{
 				playStones.remove(a);
-				randomMove(playStones,move);
+				ranMove(move);
 			}
 		}else{
-			randomMove(playStones,move);
+			ranMove(move);
 		}
-		return false;
 	}
 
 	

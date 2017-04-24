@@ -3,12 +3,17 @@ package back;
 import java.util.Random;
 import back.BoardDrawerCL;
 import back.Stone;
+import back.Stone.Color;
 
-public class Game {
+public class Game implements Cloneable  {
 	Random generator;
 	Board board;
 	Stone.Color player;
 	Dices dices;
+	private Board lastboard;
+	private Dices lastdices;
+	private Color lastplayer;
+	
 	
 	public Game(){
 		generator = new Random();
@@ -16,9 +21,11 @@ public class Game {
 		player = Stone.Color.NONE;
 		dices = new Dices();
 	}
+
 	
 	public void roll(){
 		if(player == Stone.Color.NONE){
+			board.init();
 			dices.rollDifferent();
 		}else{
 			dices.roll();
@@ -38,18 +45,24 @@ public class Game {
 //				player = Stone.Color.BLACK;
 //			}
 		case NONE:
-			player = Stone.Color.WHITE;
+			player = Stone.Color.BLACK;
 			break;
 		}
+		//BoardDrawerCL.draw(board);
 		
 	}
 	
 
 	public boolean canMove(int from, int count){
 		if(!dices.isRolled()) return false;
+			
 		if(!dices.isOnDice(count)) return false;
-		if(!board.canMove(from, count)) return false;
-		if(board.getStone(from).color() == player) return false;
+		if(!board.canMove(from, count)){
+			return false;
+		}
+		if(board.getStone(from).color() == player){
+			return false;
+		}
 		if(player == Stone.Color.BLACK){
 			if(!board.WhiteBearoff() && from + count >= 24){
 				return false;
@@ -67,10 +80,20 @@ public class Game {
 		if(!canMove(from,count)){
 			System.out.println("Error Movement");
 		}else{
-		board.move(from,count);
-		dices.takeDice(count);
-		BoardDrawerCL.draw(board);
+			lastboard = (Board) board.clone();
+			lastdices = (Dices) dices.clone();
+			lastplayer = player;
+			board.move(from,count);
+			dices.takeDice(count);
+			//BoardDrawerCL.draw(board);
 		}
+	}
+	
+	public void moveback() {
+		board = (Board) lastboard.clone();
+		dices = (Dices) lastdices.clone();
+		player = lastplayer;
+		//BoardDrawerCL.draw(board);
 	}
 	public boolean canPut(int number){
 		if(!dices.isRolled()) return false;
@@ -85,7 +108,7 @@ public class Game {
 		}else{
 		board.put(player,number);
 		dices.takeDice(number);
-		BoardDrawerCL.draw(board);
+		//BoardDrawerCL.draw(board);
 		}
 	}
 
@@ -96,10 +119,7 @@ public class Game {
 	public Stone.Color getPlayer(){
 		return player;
 	}
-	
-	public ShowOnlyDices getDice(){
-		return new ShowOnlyDices(dices);
-	}
+
 	
 	public boolean isEnded(){		
 		return board.getHome(Stone.Color.WHITE) == 15 || board.getHome(Stone.Color.BLACK) == 15;
@@ -108,6 +128,6 @@ public class Game {
 	public Stone.Color winner(){
 		if(!isEnded()) return Stone.Color.NONE;
 		if(board.getHome(Stone.Color.WHITE) == 15) return Stone.Color.WHITE;
-		return Stone.Color.BLACK;
+		else return Stone.Color.BLACK;
 	}
 }

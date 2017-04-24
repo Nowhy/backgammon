@@ -4,7 +4,7 @@ import back.Stone.Color;
 import back.BoardMap;
 //import back.BoardDrawerCL;
 
-public class Board {
+public class Board  implements Cloneable {
 	private int homeWhite;
 	private int homeBlack;
 	private int barWhite;
@@ -13,9 +13,25 @@ public class Board {
 	private Stone.Color[] stoneColors;
 	
 	public Board(){
-		init();
-		//BoardDrawerCL.draw(this);
+//		init();
+//		BoardDrawerCL.draw(this);
 	}
+	
+	//
+	
+	protected Object clone() 
+	  {
+		
+		Board b = new Board();
+		b.init();
+		b.barBlack = this.barBlack;
+		b.barWhite = this.barWhite;
+		b.homeBlack = this.homeBlack;
+		b.homeWhite = this.homeWhite;
+		b.stoneCounts = this.stoneCounts.clone();
+		b.stoneColors = this.stoneColors.clone();
+	  return b; 
+	  }
 	
 	public void init(){
 		homeWhite = 0;
@@ -43,7 +59,7 @@ public class Board {
 	
 	public boolean WhiteBearoff(){
 		int sum = 0;
-		for(int i = 0; i <= 18; i++){
+		for(int i = 0; i < 18; i++){
 			if(stoneColors[i] ==  Stone.Color.WHITE) sum = getStoneCount(i) + sum;
 		}
 		return sum == 0;
@@ -75,18 +91,28 @@ public class Board {
 
 	public boolean canMove(int from, int count){
 		if(from < 0 || from > 24) return false;
+	
 		
-		if(stoneCounts[from] == 0) return false;
+		if(stoneCounts[from] == 0){
+			return false;
+		}
 		
 		Stone.Color who = stoneColors[from];
 		int target;
 		if(who == Stone.Color.WHITE){
 			if(barWhite > 0) return false;
 			target = from + count;
+			if(!WhiteBearoff() && target >= 24){
+				return false;
+			}
 		}else{
 			if(barBlack > 0) return false;
 			target = from - count;
+			if(!BlackBearoff() && target < 0){
+				return false;
+			}
 		}
+		
 		if(target >= 24){
 			return true;
 		}else if(target < 0){
@@ -100,6 +126,7 @@ public class Board {
 			}
 		}
 	}
+
 	
 public boolean canPut(Stone.Color color, int number){
 		switch(color){
@@ -148,6 +175,7 @@ public boolean canPut(Stone.Color color, int number){
 		}
 	}
 	
+	
 	public void put(Stone.Color color, int number){
 		if(!canPut(color,number)){
 			System.out.println("Error Movement");
@@ -192,5 +220,6 @@ public boolean canPut(Stone.Color color, int number){
 		default: return 0;
 		}
 	}
+	
 
 }
